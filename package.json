@@ -23,5 +23,11 @@
         "resolve-url-loader": "^3.1.0",
         "sass": "^1.15.2",
         "sass-loader": "^8.0.0"
+    },
+    "dependencies": {
+        "react-hook-form": "^6.1.0",
+        "react-router-dom": "^5.2.0",
+        "sweetalert": "^2.1.2",
+        "sweetalert2": "^9.17.1"
     }
 }

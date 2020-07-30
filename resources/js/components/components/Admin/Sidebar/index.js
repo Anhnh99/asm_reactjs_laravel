@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Link } from 'react-router-dom'
 const Sidebar = () => {
     return (
         <ul className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -12,16 +12,20 @@ const Sidebar = () => {
             </a>
             {/* Divider */}
             <hr className="sidebar-divider my-0" />
-            {/* Nav Item - Dashboard */}
             <li className="nav-item">
-                <a className="nav-link" href="index.html">
+                <Link className="nav-link" to='/admin'>
                     <i className="fas fa-fw fa-tachometer-alt" />
-                    <span>Dashboard</span></a>
+                    <span>Dashboard</span></Link>
             </li>
             <li className="nav-item">
-                <a className="nav-link" href="index.html">
+                <Link className="nav-link" to='/admin/category'>
                     <i className="fas fa-list-ul" />
-                    <span>Sản Phẩm</span></a>
+                    <span>Danh Mục</span></Link>
+            </li>
+            <li className="nav-item">
+                <Link className="nav-link" to='/admin/products'>
+                    <i className="fas fa-grin-tongue-squint"></i>
+                    <span>Sản Phẩm</span></Link>
             </li>
         </ul>
     )
