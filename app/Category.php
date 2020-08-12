@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     protected $table = 'category';
-    protected $fillable = ['name'];
+    protected $fillable = ['name_cate', 'description'];
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Product;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -16,7 +17,12 @@ class CategoryController extends Controller
     {
         return response()->json(Category::all());
     }
-
+    // get cate limit 3
+    public function categoryLimit3()
+    {
+        $category = Category::orderBy('id', 'desc')->take(3)->get();
+        return response()->json($category);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -26,6 +32,8 @@ class CategoryController extends Controller
     {
         //
     }
+    public function countProduct()
+    { }
 
     /**
      * Store a newly created resource in storage.
@@ -72,7 +80,7 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $category = Category::find($id);
-        $category->name = $request->name;
+        $category->fill($request->all());
         $category->save();
     }
 

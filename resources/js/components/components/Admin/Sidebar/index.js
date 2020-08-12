@@ -20,12 +20,27 @@ const Sidebar = () => {
             <li className="nav-item">
                 <Link className="nav-link" to='/admin/category'>
                     <i className="fas fa-list-ul" />
-                    <span>Danh Mục</span></Link>
+                    <span>Danh Mục Sản Phẩm</span></Link>
             </li>
             <li className="nav-item">
                 <Link className="nav-link" to='/admin/products'>
                     <i className="fas fa-grin-tongue-squint"></i>
                     <span>Sản Phẩm</span></Link>
+            </li>
+            <li className="nav-item">
+                <Link className="nav-link" to='/admin/cate_blog'>
+                    <i className="fas fa-list-ul"></i>
+                    <span>Danh Mục Bài Viết</span></Link>
+            </li>
+            <li className="nav-item">
+                <Link className="nav-link" to='/admin/blogs'>
+                    <i className="fas fa-grin-tongue-squint"></i>
+                    <span>Bài Viết</span></Link>
+            </li>
+            <li className="nav-item">
+                <Link className="nav-link" to='/admin/contact'>
+                    <i className="fas fa-list-ul"></i>
+                    <span>Phản Hồi Khách Hàng</span></Link>
             </li>
         </ul>
     )

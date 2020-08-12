@@ -7,6 +7,7 @@ import Dashboard from '../pages/views/Admin/Dashboard';
 import Product from '../pages/views/Admin/Product';
 //import Views
 import Home from '../pages/views/Main/Home';
+import Product_Main from '../pages/views/Main/Product_Main';
 import {
     BrowserRouter as Router,
     Switch,
@@ -18,6 +19,21 @@ import EditProduct from '../pages/views/Admin/Product/EditProduct';
 import Category from '../pages/views/Admin/Category';
 import AddCategory from '../pages/views/Admin/Category/AddCategory'
 import EditCategory from '../pages/views/Admin/Category/EditCategory'
+import Product_Detail from '../pages/views/Main/Product_Detail';
+import Contact from '../pages/views/Main/Contact';
+import Blog from '../pages/views/Main/Blog';
+import Cart from '../pages/views/Main/Cart';
+import CategoryBlog from '../pages/views/Admin/CategoryBlog';
+import BlogAdmin from '../pages/views/Admin/Blog';
+import AddCategoryBlog from '../pages/views/Admin/CategoryBlog/AddCategoryBlog';
+import EditCategoryBlog from '../pages/views/Admin/CategoryBlog/EditCategoryBlog';
+import AddBlog from '../pages/views/Admin/Blog/AddBlog';
+import EditBlog from '../pages/views/Admin/Blog/EditBlog';
+import ProductByCategory from '../pages/views/Main/ProductByCategory';
+import BlogDetail from '../pages/views/Main/BlogDetail';
+import ContactUser from '../pages/views/Admin/Contact';
+import BlogByCategory from '../pages/views/Main/BlogByCategory';
+import SearchProduct from '../pages/views/Main/SearchProduct';
 
 const Routers = () => {
     return (
@@ -38,7 +54,6 @@ const Routers = () => {
                             <Route path='/admin/category/edit/:id'>
                                 <EditCategory />
                             </Route>
-
                             <Route path='/admin/products'>
                                 <Product />
                             </Route>
@@ -48,7 +63,27 @@ const Routers = () => {
                             <Route path='/admin/product/edit/:id'>
                                 <EditProduct />
                             </Route>
-
+                            <Route exact path='/admin/cate_blog'>
+                                <CategoryBlog />
+                            </Route>
+                            <Route path='/admin/cate_blog/add'>
+                                <AddCategoryBlog />
+                            </Route>
+                            <Route path='/admin/cate_blog/edit/:id'>
+                                <EditCategoryBlog />
+                            </Route>
+                            <Route exact path='/admin/blogs'>
+                                <BlogAdmin />
+                            </Route>
+                            <Route path='/admin/blog/add'>
+                                <AddBlog />
+                            </Route>
+                            <Route path='/admin/blog/edit/:id'>
+                                <EditBlog />
+                            </Route>
+                            <Route path='/admin/contact'>
+                                <ContactUser />
+                            </Route>
                         </Switch>
                     </LayoutAdmin>
                 </Route>
@@ -57,6 +92,33 @@ const Routers = () => {
                         <Switch>
                             <Route path="/" exact>
                                 <Home />
+                            </Route>
+                            <Route path="/product" exact>
+                                <Product_Main />
+                            </Route>
+                            <Route path="/productDetail/:id" exact>
+                                <Product_Detail />
+                            </Route>
+                            <Route path="/productByCategory/:id" exact>
+                                <ProductByCategory />
+                            </Route>
+                            <Route path="/contact" exact>
+                                <Contact />
+                            </Route>
+                            <Route path="/blog" exact>
+                                <Blog />
+                            </Route>
+                            <Route path="/blogDetail/:id" exact>
+                                <BlogDetail />
+                            </Route>
+                            <Route path="/blogByCategory/:id" exact>
+                                <BlogByCategory />
+                            </Route>
+                            <Route path="/cart" exact>
+                                <Cart />
+                            </Route>
+                            <Route path="/search/:valueSearch" exact>
+                                <SearchProduct />
                             </Route>
                         </Switch>
                     </LayoutMain>

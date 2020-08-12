@@ -6,23 +6,16 @@ import swal from 'sweetalert';
 
 const Product = () => {
     const [products, setProducts] = useState([]);
-    const [category, setCategory] = useState([]);
 
     useEffect(() => {
         getDataProducts();
     }, []);
-    // lấy cate
-    // const getCategory = () => {
-    //     axios.get('/api/category')
-    //         .then(function ({ data }) {
-    //             setCategory(data);
-    //         });
-    // }
-    // lấy danh sách sản phẩm
+    // lấy danh sách sản phẩm và danh mục
     const getDataProducts = () => {
-        axios.get('/api/product')
+        axios.get('/api/getProCate')
             .then(function ({ data }) {
                 setProducts(data);
+                // console.log(data)
             });
     }
     // Xóa Pro
@@ -46,6 +39,7 @@ const Product = () => {
     }
     const element = products.map((product, index) => {
         return <tr key={index}>
+            <td>{product.name_cate}</td>
             <td>{product.name}</td>
             <td><img width={100} src={product.image}></img></td>
             <td>{product.price}</td>
@@ -61,6 +55,7 @@ const Product = () => {
                 <table className="table table-bordered" id="dataTable" width="100%" cellSpacing={0}>
                     <thead>
                         <tr>
+                            <th>Danh Mục</th>
                             <th>Tên</th>
                             <th>Ảnh</th>
                             <th>Giá</th>

@@ -3,6 +3,8 @@ import { Link, useParams, useHistory } from 'react-router-dom'
 import axios from 'axios'
 import swal from 'sweetalert';
 import { useForm } from "react-hook-form";
+import firebase from './../../../../firebase'
+
 const EditProduct = () => {
     const { register, handleSubmit, errors } = useForm();
     const [product, setProduct] = useState({})
@@ -30,20 +32,41 @@ const EditProduct = () => {
     const showCategory = () => {
         return category.map((category, index) => {
             return (
-                <option key={index} value={category.id}>{category.name}</option>
+                <option key={index} value={category.id}>{category.name_cate}</option>
             )
         })
     }
     let history = useHistory()
     //update
-    const onHandleSubmit = (data) => {
+    const onHandleSubmit = (product) => {
         event.preventDefault()
-        axios.put(`/api/product/${id}`, data)
-            .then(function ({ data }) {
-                swal("Đã sửa sản phẩm thành công", "Nhấn vào OK để quay lại", "success");
-                history.push('/admin/products')
-                // console.log(data)
+        let file = product.imageNew[0];
+        if (file == undefined) {
+            axios.put(`/api/product/${id}`, product)
+                .then(function ({ data }) {
+                    swal("Đã sửa sản phẩm thành công", "Nhấn vào OK để quay lại", "success");
+                    history.push('/admin/products')
+                })
+        } else {
+            // tạo folder chứa ảnh trên firesbase
+            let storageRef = firebase.storage().ref(`images/${file.name}`);
+            // đẩy ảnh lên đường dẫn trên
+            let uploadTask = storageRef.put(file);
+            // thực hiện việc đầy ảnh lên firebase
+            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED);
+            firebase.storage().ref().child(`images/${file.name}`).getDownloadURL().then((url) => {
+                const newPro = {
+                    ...product,
+                    image: url
+                }
+                axios.put(`/api/product/${id}`, newPro)
+                    .then(function ({ data }) {
+                        swal("Đã sửa sản phẩm thành công", "Nhấn vào OK để quay lại", "success");
+                        history.push('/admin/products')
+                    })
             })
+        }
+
     }
     return (
         <div className="container" >
@@ -73,24 +96,33 @@ const EditProduct = () => {
                         className="form-control"
                         name="name"
                         defaultValue={product.name}
-                        ref={register({ required: true, minLength: 5 })}
+                        ref={register({ required: true, minLength: 5, pattern: /^\S{1}.{0,200}$/i })}
                     />
                     <span className="text-danger">
                         {errors.name && errors.name.type === "required" && ('Hãy nhập tên sản phẩm')}
                         {errors.name && errors.name.type === "minLength" && ('Hãy nhập tên sản phẩm ít nhất 5 ký tự')}
+                        {errors.name && errors.name.type === "pattern" && ('Tên sản phẩm không được có khoảng trống đầu tiên')}
                     </span>
                 </div>
-                <div className="form-group">
-                    <label >Ảnh sản phẩm</label>
+                <div className="form-group" hidden>
                     <input type="text"
                         className="form-control"
                         name="image"
                         defaultValue={product.image}
-                        ref={register({ required: true })} />
-                    <span className="text-danger">
-                        {errors.image && errors.image.type === "required" && ('Hãy nhập URL ảnh sản phẩm')}
-                    </span>
+                        ref={register()} />
                 </div>
+                {/* hiển thi ảnh  */}
+                <div className="form-group">
+                    <label >Ảnh sản phẩm</label>
+                    <img ref={register()} width={150} src={product.image} />
+                </div>
+                <div className="form-group">
+                    <input type="file"
+                        className="form-control"
+                        name="imageNew"
+                        ref={register()} />
+                </div>
+
                 <div className="form-group">
                     <label >Giá sản phẩm</label>
                     <input type="number"

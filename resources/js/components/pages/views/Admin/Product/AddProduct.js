@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import ReactDOM from 'react-dom'
 import axios from 'axios';
 import swal from 'sweetalert';
+import firebase from './../../../../firebase'
+
 const AddProduct = () => {
     const { register, handleSubmit, watch, errors } = useForm();
     // const [product, setProduct] = useState({})
@@ -23,16 +25,29 @@ const AddProduct = () => {
     let history = useHistory();
     const onHandleSubmit = (product) => {
         event.preventDefault();
-        axios.post('/api/product', product)
-            .then(function ({ data }) {
-                swal("Đã thêm sản phẩm thành công", "Nhấn vào OK để quay lại", "success");
-                history.push('/admin/products')
-            })
+        let file = product.image[0];
+        // tạo folder chứa ảnh trên firesbase
+        let storageRef = firebase.storage().ref(`images/${file.name}`);
+        // đẩy ảnh lên đường dẫn trên
+        let uploadTask = storageRef.put(file);
+        // thực hiện việc đầy ảnh lên firebase
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED);
+        firebase.storage().ref().child(`images/${file.name}`).getDownloadURL().then((url) => {
+            const newPro = {
+                ...product,
+                image: url
+            }
+            axios.post('/api/product', newPro)
+                .then(function ({ data }) {
+                    swal("Đã thêm sản phẩm thành công", "Nhấn vào OK để quay lại", "success");
+                    history.push('/admin/products')
+                })
+        })
     }
     const showCategory = () => {
-        return category.map((category) => {
+        return category.map((category, index) => {
             return (
-                <option key={category.id} value={category.id}>{category.name}</option>
+                <option key={category.id} value={category.id}>{category.name_cate}</option>
             )
         })
     }
@@ -45,30 +60,34 @@ const AddProduct = () => {
                     <select
                         className="form-control"
                         name="category_id"
-                        ref={register}>
+                        ref={register({ required: true })}>
+                        <option>-----Hãy Chọn Danh Mục Cho Sản Phẩm-----</option>
                         {showCategory()}
                     </select>
+                    <span className="text-danger">
+                        {errors.category_id && errors.category_id.type === "required" && ('Hãy chọn danh mục cho sản phẩm')}
+                    </span>
                 </div>
                 <div className="form-group">
                     <label >Tên sản phẩm</label>
                     <input type="text"
                         className="form-control"
                         name="name"
-                        ref={register({ required: true, minLength: 5 })} />
+                        ref={register({ required: true, minLength: 5, pattern: /^\S{1}.{0,100}$/i })} />
                     <span className="text-danger">
                         {errors.name && errors.name.type === "required" && ('Hãy nhập tên sản phẩm')}
                         {errors.name && errors.name.type === "minLength" && ('Hãy nhập tên sản phẩm ít nhất 5 ký tự')}
+                        {errors.name && errors.name.type === "pattern" && ('Tên sản phẩm không được có khoảng trống đầu tiên')}
                     </span>
-
                 </div>
                 <div className="form-group">
-                    <label >URL ảnh sản phẩm</label>
-                    <input type="text"
+                    <label >Ảnh sản phẩm</label>
+                    <input type="file"
                         className="form-control"
                         name="image"
                         ref={register({ required: true })} />
                     <span className="text-danger">
-                        {errors.image && errors.image.type === "required" && ('Hãy nhập URL ảnh sản phẩm')}
+                        {errors.image && errors.image.type === "required" && ('Hãy chọn ảnh sản phẩm')}
                     </span>
                 </div>
                 <div className="form-group">
