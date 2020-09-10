@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link, useParams, } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { addToCart } from "../../../../actions/cart";
 
 
 const Product_Detail = () => {
@@ -9,7 +11,7 @@ const Product_Detail = () => {
     const [productByCate, setProductByCate] = useState([])
     const location = useLocation()
     const { id } = useParams();
-
+    const dispatch = useDispatch();
     useEffect(() => {
         getDataProduct()
     }, [location]);
@@ -61,6 +63,17 @@ const Product_Detail = () => {
         </div>
 
     })
+    // thêm vào giỏ hàng
+    const handleClick = (pro) => {
+        dispatch(addToCart(pro));
+        swal({
+            title: "Thêm vào giỏ thành công!",
+            text: "Hãy nhấn OK!",
+            icon: "success",
+            button: "OK",
+        });
+    }
+
     return (
         <div>
             <div>
@@ -96,7 +109,7 @@ const Product_Detail = () => {
                             <div className="p-t-33 p-b-60">
                                 <div className="flex-r-m flex-w p-t-10">
                                     <div className="w-size16 flex-m flex-w">
-                                        <div className="flex-w bo5 of-hidden m-r-22 m-t-10 m-b-10">
+                                        {/* <div className="flex-w bo5 of-hidden m-r-22 m-t-10 m-b-10">
                                             <button className="btn-num-product-down color1 flex-c-m size7 bg8 eff2">
                                                 <i className="fs-12 fa fa-minus" aria-hidden="true" />
                                             </button>
@@ -104,11 +117,13 @@ const Product_Detail = () => {
                                             <button className="btn-num-product-up color1 flex-c-m size7 bg8 eff2">
                                                 <i className="fs-12 fa fa-plus" aria-hidden="true" />
                                             </button>
-                                        </div>
+                                        </div> */}
                                         <div className="btn-addcart-product-detail size9 trans-0-4 m-t-10 m-b-10">
                                             {/* Button */}
-                                            <button className="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
-                                                Mua Ngay
+                                            <button
+                                                onClick={() => handleClick(product)}
+                                                className="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+                                                Thêm vào giỏ
                       </button>
                                         </div>
                                     </div>

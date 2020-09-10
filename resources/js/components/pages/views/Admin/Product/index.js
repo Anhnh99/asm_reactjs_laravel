@@ -37,6 +37,7 @@ const Product = () => {
 
             })
     }
+    // map pro
     const element = products.map((product, index) => {
         return <tr key={index}>
             <td>{product.name_cate}</td>
@@ -49,9 +50,36 @@ const Product = () => {
                 <button className="btn btn-danger" onClick={() => { removePro(product.id) }}>Xóa</button></td>
         </tr >
     })
+    const [valueSearch, setValueSearch] = useState("")
+    const onHandleChange = (event) => {
+        let valueSearch = event.target.value
+        if (valueSearch == "") {
+            getDataProducts()
+        } else {
+            axios.get(`/api/search/${valueSearch}`)
+                .then(function (response) {
+                    setProducts(response.data)
+                    // console.log(response.data)
+                });
+        }
+
+
+    }
     return (
         <div className="card-body">
-            <div className="table-responsive">
+            <form className="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                <div className="input-group">
+                    <input type="text" className="form-control bg-light border-0 small" placeholder="Tìm kiếm sản phẩm..."
+                        aria-label="Search" aria-describedby="basic-addon2" name="product_search" onChange={onHandleChange} />
+                    <div className="input-group-append">
+                        {/* <button className="btn btn-primary" type="button">
+                            <i className="fas fa-search fa-sm" />
+                        </button> */}
+                        <Link to={`search/${valueSearch}`} className="btn btn-primar"><i className="fas fa-search fa-sm" /></Link>
+                    </div>
+                </div>
+            </form>
+            <div className="table-responsive mt-2">
                 <table className="table table-bordered" id="dataTable" width="100%" cellSpacing={0}>
                     <thead>
                         <tr>

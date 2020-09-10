@@ -1,7 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useSelector } from "react-redux";
 
 const Header = () => {
+    const cart = useSelector(state => state.cart);
+    let count = cart.cart.length
     return (
         <header className="header2">
             {/* Header desktop */}
@@ -27,7 +30,7 @@ const Header = () => {
                         <div className="header-wrapicon2 m-r-13">
                             <Link to="/cart">
                                 <img src="images/icons/icon-header-02.png" className="header-icon1 js-show-header-dropdown" alt="ICON" />
-                                <span className="header-icons-noti">1</span></Link>
+                                <span className="header-icons-noti">{count}</span></Link>
                             {/* Header cart noti */}
 
                         </div>

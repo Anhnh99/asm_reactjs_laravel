@@ -39,7 +39,7 @@ const EditProduct = () => {
     let history = useHistory()
     //update
     const onHandleSubmit = (product) => {
-        event.preventDefault()
+        // event.preventDefault()
         let file = product.imageNew[0];
         if (file == undefined) {
             axios.put(`/api/product/${id}`, product)

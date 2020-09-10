@@ -1,6 +1,56 @@
 import React from 'react'
+import { useDispatch, useSelector } from "react-redux";
+
+import { deleteCart, updateCart } from "../../../../actions/cart";
 
 const Cart = () => {
+    const dispatch = useDispatch();
+    const cart = useSelector(state => state.cart);
+    const carts = cart.cart
+    const showCart = carts.map((cart, index) => {
+        return <tr className="table-row" key={index}>
+            <td className="column-1">
+                <div className="cart-img-product b-rad-4 o-f-hidden">
+                    <img src={cart.image} alt="IMG-PRODUCT" />
+                </div>
+            </td>
+            <td className="column-2">{cart.name}</td>
+            <td className="column-3">{cart.price}</td>
+            <td className="column-4">
+                <div className="flex-w bo5 of-hidden w-size17">
+                    <button className="btn-num-product-down color1 flex-c-m size7 bg8 eff2" onClick={() => dispatch(updateCart(cart.id, -1))}>
+                        <i className="fs-12 fa fa-minus" aria-hidden="true" />
+                    </button>
+                    <input className="size8 m-text18 t-center num-product" type="number" name="num-product1" value={cart.quantity} />
+                    <button className="btn-num-product-up color1 flex-c-m size7 bg8 eff2" onClick={() => dispatch(updateCart(cart.id, 1))}>
+                        <i className="fs-12 fa fa-plus" aria-hidden="true" />
+                    </button>
+                </div>
+            </td>
+            <td className="column-5">{cart.price}</td>
+            <td className="column-6"><button onClick={() => deleteItem(cart)} className="btn btn-danger">X</button></td>
+        </tr>
+    })
+    // thêm vào giỏ hàng
+    const deleteItem = (cart) => {
+        swal({
+            title: "Bạn có chắc muốn xóa?",
+            text: "Sản phẩm sẽ bị xóa khỏi giỏ hàng",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("Hoàn thành", {
+                        icon: "success",
+                    });
+                    dispatch(deleteCart(cart.id));
+                } else {
+                    swal("Chưa xóa sản phẩm!");
+                }
+            });
+    }
     return (
         <div>
 
@@ -13,85 +63,33 @@ const Cart = () => {
                             <table className="table-shopping-cart">
                                 <tbody><tr className="table-head">
                                     <th className="column-1" />
-                                    <th className="column-2">Product</th>
-                                    <th className="column-3">Price</th>
-                                    <th className="column-4 p-l-70">Quantity</th>
-                                    <th className="column-5">Total</th>
+                                    <th className="column-2">Sản Phẩm</th>
+                                    <th className="column-3">Giá</th>
+                                    <th className="column-4 p-l-70">Số Lượng</th>
+                                    <th className="column-5">Tổng Giá</th>
+                                    <th className="column-5">Xóa</th>
                                 </tr>
-                                    <tr className="table-row">
-                                        <td className="column-1">
-                                            <div className="cart-img-product b-rad-4 o-f-hidden">
-                                                <img src="images/item-10.jpg" alt="IMG-PRODUCT" />
-                                            </div>
-                                        </td>
-                                        <td className="column-2">Men Tshirt</td>
-                                        <td className="column-3">$36.00</td>
-                                        <td className="column-4">
-                                            <div className="flex-w bo5 of-hidden w-size17">
-                                                <button className="btn-num-product-down color1 flex-c-m size7 bg8 eff2">
-                                                    <i className="fs-12 fa fa-minus" aria-hidden="true" />
-                                                </button>
-                                                <input className="size8 m-text18 t-center num-product" type="number" name="num-product1" defaultValue={1} />
-                                                <button className="btn-num-product-up color1 flex-c-m size7 bg8 eff2">
-                                                    <i className="fs-12 fa fa-plus" aria-hidden="true" />
-                                                </button>
-                                            </div>
-                                        </td>
-                                        <td className="column-5">$36.00</td>
-                                    </tr>
-                                    <tr className="table-row">
-                                        <td className="column-1">
-                                            <div className="cart-img-product b-rad-4 o-f-hidden">
-                                                <img src="images/item-05.jpg" alt="IMG-PRODUCT" />
-                                            </div>
-                                        </td>
-                                        <td className="column-2">Mug Adventure</td>
-                                        <td className="column-3">$16.00</td>
-                                        <td className="column-4">
-                                            <div className="flex-w bo5 of-hidden w-size17">
-                                                <button className="btn-num-product-down color1 flex-c-m size7 bg8 eff2">
-                                                    <i className="fs-12 fa fa-minus" aria-hidden="true" />
-                                                </button>
-                                                <input className="size8 m-text18 t-center num-product" type="number" name="num-product2" defaultValue={1} />
-                                                <button className="btn-num-product-up color1 flex-c-m size7 bg8 eff2">
-                                                    <i className="fs-12 fa fa-plus" aria-hidden="true" />
-                                                </button>
-                                            </div>
-                                        </td>
-                                        <td className="column-5">$16.00</td>
-                                    </tr>
+                                    {showCart}
                                 </tbody></table>
                         </div>
                     </div>
-                    <div className="flex-w flex-sb-m p-t-25 p-b-25 bo8 p-l-35 p-r-60 p-lr-15-sm">
-                        <div className="flex-w flex-m w-full-sm">
 
-                        </div>
-                        <div className="size10 trans-0-4 m-t-10 m-b-10">
-                            {/* Button */}
-                            <button className="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
-                                Update Cart
-                </button>
-                        </div>
-                    </div>
                     {/* Total */}
                     <div className="bo9 w-size18 p-l-40 p-r-40 p-t-30 p-b-38 m-t-30 m-r-0 m-l-auto p-lr-15-sm">
-                        <h5 className="m-text20 p-b-24">
-                            Cart Totals
-              </h5>
+
                         {/*  */}
                         <div className="flex-w flex-sb-m p-t-26 p-b-30">
                             <span className="m-text22 w-size19 w-full-sm">
-                                Total:
+                                Tổng Tiền Trong Giỏ:
                 </span>
                             <span className="m-text21 w-size20 w-full-sm">
-                                $39.00
-                </span>
+                                {cart.total} vnđ
+                            </span>
                         </div>
                         <div className="size15 trans-0-4">
                             {/* Button */}
                             <button className="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
-                                Proceed to Checkout
+                                Thanh Toán
                 </button>
                         </div>
                     </div>
@@ -101,4 +99,4 @@ const Cart = () => {
     )
 }
 
-export default Cart
+export default Cart;

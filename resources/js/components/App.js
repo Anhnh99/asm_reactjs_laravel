@@ -11,6 +11,9 @@ import {
 } from "react-router-dom";
 // import Dashboard from './Dashboard';
 import Routers from './routers';
+
+import { Provider } from 'react-redux'
+import store from "./store";
 function App() {
     return (
         <div>
@@ -23,5 +26,8 @@ function App() {
 export default App;
 
 if (document.getElementById('root')) {
-    ReactDOM.render(<App />, document.getElementById('root'));
+    ReactDOM.render(
+        <Provider store={store}><App /></Provider>
+        , document.getElementById('root')
+    );
 }

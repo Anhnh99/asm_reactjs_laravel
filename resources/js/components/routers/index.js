@@ -33,7 +33,6 @@ import ProductByCategory from '../pages/views/Main/ProductByCategory';
 import BlogDetail from '../pages/views/Main/BlogDetail';
 import ContactUser from '../pages/views/Admin/Contact';
 import BlogByCategory from '../pages/views/Main/BlogByCategory';
-import SearchProduct from '../pages/views/Main/SearchProduct';
 
 const Routers = () => {
     return (
@@ -116,9 +115,6 @@ const Routers = () => {
                             </Route>
                             <Route path="/cart" exact>
                                 <Cart />
-                            </Route>
-                            <Route path="/search/:valueSearch" exact>
-                                <SearchProduct />
                             </Route>
                         </Switch>
                     </LayoutMain>
